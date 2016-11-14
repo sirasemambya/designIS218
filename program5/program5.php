@@ -1,106 +1,99 @@
 <?php
-class shoes {
-  private $make;
+
+class shoe {
+  private $brand;
   private $year;
-  private $color;
-  function __construct($make, $year, $color) {
-    $this->make = $make;
+  private $cost;
+  function __construct($brand, $year, $cost) {
+    $this->brand = $brand;
     $this->year = $year;
-    $this->color = $color;
+    $this->cost = $cost;
   }
 
-  function getMake() {
-    return $this->make;
+  function getcost() {
+    return $this->cost;
+  }
+  function getbrand() {
+    return $this->brand;
   }
 
   function getyear() {
     return $this->year;
   }
-  function getColor() {
-    return $this->color;
-  }
-  function getMakeAndYear() {
-    return $this->getMake() . ' ' . $this->getyear();
-  }
 }
-//factory
 class shoeFactory {
-  public static function create($make, $year, $color) {
-    return new shoe($make, $year, $color);
+  public static function create($brand, $year, $cost) {
+    return new shoe($brand, $year, $cost);
   }
 }
-//decorator
 class shoeDecorator {
   protected $shoe;
-  protected $color;
-
+  protected $cost;
   public function __construct(shoe $shoe_in) {
     $this->shoe = $shoe_in;
-    $this->resetColor();
+    $this->resetcost();
   }
-  function resetColor() {
-    $this->color = $this->shoe->getColor();
+  function resetcost() {
+    $this->cost = $this->shoe->getcost();
   }
-  function showColor() {
-    return $this->color;
-  }
-}
-class redshoe extends shoeDecorator {
-  private $cd;
-  public function __construct(shoeDecorator $cd_in) {
-    $this->cd = $cd_in;
-    $this->changeColor();
-  }
-  function changeColor() {
-    $this->cd->color = 'Red';
-  }
-}
-class greenshoe extends shoeDecorator {
-  private $cd;
-  public function __construct(shoeDecorator $cd_in) {
-    $this->cd = $cd_in;
-    $this->changeColor();
-  }
-  function changeColor() {
-    $this->cd->color = 'Green';
-  }
-}
-class blueshoe extends shoeDecorator {
-  private $cd;
-  public function __construct(shoeDecorator $cd_in) {
-    $this->cd = $cd_in;
-    $this->changeColor();
-  }
-  function changeColor() {
-    $this->cd->color = 'Blue';
+  function showcost() {
+    return $this->cost;
   }
 }
 
+class nikeshoe extends shoeDecorator {
+  private $cd;
 
-//strategy
-class shoeStrat {
+  public function __construct(shoeDecorator $cd_in) {
+    $this->cd = $cd_in;
+    $this->changebrand();
+  }
+  function changebrand() {
+    $this->cd->cost = 'Nike';
+  }
+}
+class adidasshoe extends shoeDecorator {
+  private $cd;
+  public function __construct(shoeDecorator $cd_in) {
+    $this->cd = $cd_in;
+    $this->changebrand();
+  }
+  function changebrand() {
+    $this->cd->cost = 'Adidas';
+  }
+}
+class pumashoe extends shoeDecorator {
+  private $cd;
+  public function __construct(shoeDecorator $cd_in) {
+    $this->cd = $cd_in;
+    $this->changebrand();
+  }
+  function changebrand() {
+    $this->cd->cost = 'Puma';
+  }
+}
+class costStrat {
   public $strategy = NULL;
-  public function __construct(shoeDecorator $cd_in, make) {
-    switch($color) {
+  public function __construct(shoeDecorator $cd_in, $cost) {
+    switch($cost) {
+      case "puma":
+        $this->strategy = new pumashoe($cd_in);
+	break;
       case "nike":
         $this->strategy = new nikeshoe($cd_in);
 	break;
       case "adidas":
         $this->strategy = new adidasshoe($cd_in);
 	break;
-      case "puma":
-        $this->strategy = new pumashoe($cd_in);
-	break;
       default:
-        echo "We do not have that brand";
+        echo "The shoe is not in stock.";
     }
   }
 }
 
-$ourshoe = shoeFactory::create('Nike', '1995', 'purple');
+$ourshoe = shoeFactory::create('nike', '1987', 'expensive');
 $decorator = new shoeDecorator($ourshoe);
-$color = $_POST["make"];
-$paintedshoe = new shoeStrat($decorator, $make);
-echo '<br>';
-echo 'Your shoes brand is ' . $decorator-> showMake();
+$cost = $_POST["brand"];
+$paintedshoe = new costStrat($decorator, $brand);
+echo 'Your shoe brand is ' . $decorator->showcost();
 ?>

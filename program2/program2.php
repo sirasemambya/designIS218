@@ -5,17 +5,17 @@ class replyStrat {
   public $strategy = NULL;
   public function __construct($message) {
     switch($message) {
-      case "hey":
-        $this->strategy = new replyFactory("hey");
+      case "yes":
+        $this->strategy = new replyFactory("yes");
 	break;
-      case "hi":
-        $this->strategy = new replyFactory("hi");
+      case "no":
+        $this->strategy = new replyFactory("no");
 	break;
-      case "hello":
-        $this->strategy = new replyFactory("hello");
+      case "no comment":
+        $this->strategy = new replyFactory("no comment");
 	break;
       default:
-        echo "That is not a valid message";
+        echo "Sorry, I don't understand";
     }
   }
   public function getResponse() {
@@ -29,21 +29,22 @@ class replyFactory extends AbstractFactoryMethod {
   public $response;
   public function __construct($param){
     switch($param) {
-      case "hey":
-        $this->response = "hey.";
+      case "yes":
+        $this->response = "Congrats!";
 	break;
-      case "hi":
-        $this->response = "I am John's assistant.";
+      case "no":
+        $this->response = "haha you suck!";
 	break;
-      case "hello":
-        $this->response = "John is my boss.";
+      case "no comment":
+        $this->response = "Just tell me!";
 	break;
     }
   }
   public function getResponse() {
-    return $this->response;
+    echo $this->response;
   }
 }
+
 class responseDecorator {
   protected $response;
   public function __construct($response_in) {
@@ -53,13 +54,10 @@ class responseDecorator {
     $num = rand(1, 3);
     switch($num) {
       case "1":
-        $this->response = $this->response . ' How are you today?';
+        $this->response = $this->response . ' Do you want pizza?';
 	break;
       case "2":
-        $this->response = $this->response . ' How are you?';
-	break;
-      case "3":
-        $this->response = $this->response . ' How can I help you?';
+        $this->response = $this->response . ' Do you want a burger?';
 	break;
     }
     return $this->response;
@@ -72,4 +70,5 @@ $responseText = $response->getResponse($message);
 
 $decorator = new responseDecorator($responseText);
 echo $decorator->randResponse();
+
 ?>
