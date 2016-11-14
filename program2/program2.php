@@ -17,6 +17,7 @@ class replyStrat {
       default:
         echo "Sorry, I don't understand";
     }
+
   }
   public function getResponse() {
     return $this->strategy->getResponse();
