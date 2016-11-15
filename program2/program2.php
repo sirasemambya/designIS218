@@ -52,7 +52,7 @@ class responseDecorator {
     $this->response = $response_in;
   }
   function randResponse() {
-    $num = rand(1, 3);
+    $num = rand(1, 2);
     switch($num) {
       case "1":
         $this->response = $this->response . ' Do you want pizza?';
